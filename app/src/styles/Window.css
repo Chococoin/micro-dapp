@@ -1,6 +1,8 @@
 .inData{
-	width: 5vw;
-	height: 7vh;
+	width: 10vw;
+	height: 10vw;
 	color: white;
-	background-color: #567624;
+	background-color: #70AB8F;
+	border-radius: 10px;
+	margin: 0 auto;
 }
