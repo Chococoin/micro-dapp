@@ -11,10 +11,11 @@ class Window extends Component {
 
     if(typeof web3 != 'undefined'){
       console.log("Using web3 detected from external source like Metamask");
+      console.log(web3.currentProvider);
       this.web3 = new Web3(web3.currentProvider);
     }else{
-      console.log("No web3 detected. Falling back to http://localhost:7545. You should remove this fallback when you deploy live, as it's inherently insecure. Consider switching to Metamask for development. More info here: http://truffleframework.com/tutorials/truffle-and-metamask");
-      this.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
+      console.log("No web3 detected. Falling back to http://127.0.0.1:7545");
+      this.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));
     }
 
     const MyContract = web3.eth.contract([
