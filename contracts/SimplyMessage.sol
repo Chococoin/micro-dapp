@@ -1,6 +1,6 @@
-pragma solidyty ^0.0.23;
+pragma solidity ^0.4.23;
 
-contract EasyThing {
+contract SimplyMessage {
 	address owner;
 	struct myMessage{
 		string info;
@@ -9,7 +9,7 @@ contract EasyThing {
 
 	mapping (address => myMessage) messages;
 
-	contructor(string _message) public {
+	constructor(string _message) public {
 		owner = msg.sender;
 		messages[msg.sender].info = _message;
 		messages[msg.sender].active = true; 
@@ -20,9 +20,7 @@ contract EasyThing {
 		return true;
 	}
 
-	function showMessage() external view return(string){
+	function showMessage() external view returns(string){
 		return messages[msg.sender].info;
 	}
-
-
 }
