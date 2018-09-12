@@ -10,6 +10,7 @@ class Window extends Component {
     this.state = {
       text: "Nada de nada!",
       account: "0x0",
+      value: '',
     };
 
     if (typeof web3 != 'undefined') {
@@ -26,7 +27,8 @@ class Window extends Component {
     this.MyContract.setProvider(this.web3Provider);
 
     this.showMessage = this.showMessage.bind(this);
-    //this.changeMessage = this.changeMessage.bind(this);
+    this.changeMessage = this.changeMessage.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
  
   componentWillMount(){
@@ -39,6 +41,16 @@ class Window extends Component {
         this.setState({text: res});
       }
     });
+  }
+
+  changeMessage(event){
+    this.contractInstance.changeMessage(this.state.value);
+    event.preventDefault();
+    this.setState({value: ''})
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
   }
 
   updateState(){
@@ -54,8 +66,14 @@ class Window extends Component {
   render(){
       return(
           <div className="inData">
-              <h4>{this.state.account}</h4>
+              <h4>Address:</h4>
+              <p>{this.state.account}</p>
+              <h4>Text:</h4>
               <p>{this.state.text}</p>
+              <form onSubmit={this.changeMessage}>
+                <input type="text" value={this.state.value} onChange={this.handleChange}/><br />
+                <button type="Submit">Envia</button>
+              </form>
           </div>
       );
   };
