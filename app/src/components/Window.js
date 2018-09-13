@@ -9,8 +9,7 @@ class Window extends Component {
     super();
     this.state = {
       text: "Nada de nada!",
-      account: "0x0",
-      value: '',
+      account: "0x0"
     };
 
     if (typeof web3 != 'undefined') {
@@ -44,9 +43,12 @@ class Window extends Component {
   }
 
   changeMessage(event){
-    this.contractInstance.changeMessage(this.state.value);
+    //this.contractInstance.changeMessage(this.state.value);
+    console.log(this.state.value);
+    console.log(this.textInput.value);
     event.preventDefault();
-    this.setState({value: ''})
+    this.textInput.value = '';
+    this.textInput.focus();
   }
 
   handleChange(event) {
@@ -71,7 +73,7 @@ class Window extends Component {
               <h4>Text:</h4>
               <p>{this.state.text}</p>
               <form onSubmit={this.changeMessage}>
-                <input type="text" value={this.state.value} onChange={this.handleChange}/><br />
+                <input ref={input => this.textInput = input} type="text"/><br />
                 <button type="Submit">Envia</button>
               </form>
           </div>
