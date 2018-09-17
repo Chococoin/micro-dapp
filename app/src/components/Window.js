@@ -27,43 +27,54 @@ class Window extends Component {
 
     this.showMessage = this.showMessage.bind(this);
     this.changeMessage = this.changeMessage.bind(this);
-    this.handleChange = this.handleChange.bind(this);
   }
  
   componentWillMount(){
-    this.updateState();
+    this.web3.eth.getCoinbase((err, account)=>{
+      this.setState({account});
+      this.MyContract.deployed().then((instance)=>{
+       this.contractInstance = instance;
+      })
+    })
+
+  }
+ 
+  componentDidMount(){
+    this.interval = setInterval(() => {
+                                        this.web3.eth.getCoinbase((err, account)=>{
+                                          this.setState({account});
+                                        })
+                                      } ,1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   showMessage(){
     this.contractInstance.showMessage().then((res)=>{
       if (res != null) {
-        this.setState({text: res});
+        return this.setState({text: res});
       }
     });
   }
 
   changeMessage(event){
     //this.contractInstance.changeMessage(this.state.value);
-    console.log(this.state.value);
     console.log(this.textInput.value);
     event.preventDefault();
     this.textInput.value = '';
     this.textInput.focus();
   }
 
-  handleChange(event) {
-    this.setState({value: event.target.value});
-  }
-
-  updateState(){
+/*  updateState(){
     this.web3.eth.getCoinbase((err, account) => {
       this.setState({ account });
       this.MyContract.deployed().then((instance)=>{
         this.contractInstance = instance;
-        this.showMessage();
       });
     })
-  }
+  }*/
 
   render(){
       return(
