@@ -46,13 +46,14 @@ class Window extends Component {
     this.interval = setInterval(() => {
       this.web3.eth.getCoinbase((err, account)=>{
         if (account != this.state.account){
-          this.setState({account})}
-      this.app.showMessage({from: account }).then((res)=>{
-        this.setState({text: res})
-      })
-        
-      })
-    } ,1000);
+          this.setState({account});
+          this.app.showMessage({from: account}).then((res)=>{
+          this.setState({text: res});
+          console.log(res);
+          })
+        }
+      });
+    }, 1000)
   }
 
   componentWillUnmount() {
