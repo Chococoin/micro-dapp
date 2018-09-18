@@ -36,8 +36,7 @@ class Window extends Component {
     this.MyContract.deployed().then((instance)=>{
       this.contractInstance = instance;
       this.contractInstance.showMessage({from: this.state.account}).then((res)=>{
-        console.log(res);
-        //this.state.text = res;
+        this.state.text = res;
       });
     })
   }
