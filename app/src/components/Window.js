@@ -32,19 +32,24 @@ class Window extends Component {
   componentWillMount(){
     this.web3.eth.getCoinbase((err, account)=>{
       this.setState({account});
-      this.MyContract.deployed().then((instance)=>{
-       this.contractInstance = instance;
-      })
     })
-
+    this.MyContract.deployed().then((instance)=>{
+      this.contractInstance = instance;
+      this.contractInstance.showMessage({from: this.state.account}).then((res)=>{
+        console.log(res);
+        //this.state.text = res;
+      });
+    })
   }
  
   componentDidMount(){
     this.interval = setInterval(() => {
-                                        this.web3.eth.getCoinbase((err, account)=>{
-                                          this.setState({account});
-                                        })
-                                      } ,1000);
+      this.web3.eth.getCoinbase((err, account)=>{
+        if (account != this.state.account){
+          this.setState({account})}
+        
+      })
+    } ,1000);
   }
 
   componentWillUnmount() {
