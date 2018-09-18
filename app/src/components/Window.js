@@ -9,7 +9,8 @@ class Window extends Component {
     super();
     this.state = {
       text: "Nada de nada!",
-      account: "0x0"
+      account: "0x0",
+      instance: null,
     };
 
     if (typeof web3 != 'undefined') {
@@ -30,16 +31,15 @@ class Window extends Component {
   }
  
   componentWillMount(){
+    this.MyContract.deployed().then((instance)=>{
+      this.app = instance;
+      this.app.showMessage().then((res)=>{
+        this.setState({text: res})
+      });
+    });
     this.web3.eth.getCoinbase((err, account)=>{
       this.setState({account});
-    })
-    this.MyContract.deployed().then((instance)=>{
-      this.contractInstance = instance;
-      this.contractInstance.showMessage({from: this.state.account}).then((res)=>{
-        console.log(res)
-        this.setState({text: res});
-      });
-    })
+      })
   }
  
   componentDidMount(){
@@ -47,6 +47,9 @@ class Window extends Component {
       this.web3.eth.getCoinbase((err, account)=>{
         if (account != this.state.account){
           this.setState({account})}
+      this.app.showMessage({from: account }).then((res)=>{
+        this.setState({text: res})
+      })
         
       })
     } ,1000);
@@ -57,7 +60,7 @@ class Window extends Component {
   }
 
   showMessage(){
-    this.contractInstance.showMessage().then((res)=>{
+    this.app.showMessage().then((res)=>{
       if (res != null) {
         return this.setState({text: res});
       }
@@ -71,15 +74,6 @@ class Window extends Component {
     this.textInput.value = '';
     this.textInput.focus();
   }
-
-/*  updateState(){
-    this.web3.eth.getCoinbase((err, account) => {
-      this.setState({ account });
-      this.MyContract.deployed().then((instance)=>{
-        this.contractInstance = instance;
-      });
-    })
-  }*/
 
   render(){
       return(
